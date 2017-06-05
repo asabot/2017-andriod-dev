@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="v.datagatherer.MainActivity">
 
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -16,15 +16,28 @@
 
         <TextView
             android:id="@+id/message"
-            android:layout_width="match_parent"
+            android:layout_width="22dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/title_home" />
+            android:text="@string/title_home"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button2"
+            tools:layout_constraintBaseline_creator="1"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="8dp" />
 
-    </FrameLayout>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="97dp"
+            android:layout_height="58dp"
+            android:text="Button"
+            tools:layout_constraintTop_creator="1"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="127dp"
+            android:layout_marginTop="109dp" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

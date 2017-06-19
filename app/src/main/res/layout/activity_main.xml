@@ -12,49 +12,123 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:scrollbars="vertical">
+
+        <Button
+            android:id="@+id/BUTTON_1"
+            android:layout_width="97dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:onClick="sendEmail"
+            android:text="SHARE SECRETS"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
+
+        <Button
+            android:id="@+id/BUTTON_2"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="63dp"
+            android:onClick="displayCoord"
+            android:text="GET COORDINATES"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/BUTTON_1" />
 
         <TextView
-            android:id="@+id/message"
-            android:layout_width="22dp"
-            android:layout_height="wrap_content"
-            android:text="@string/title_home"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button2"
-            tools:layout_constraintBaseline_creator="1"
-            tools:layout_constraintLeft_creator="1"
+            android:id="@+id/TextView_1"
+            android:layout_width="115dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="180dp"
+            android:text="Latitude"
+            android:textAlignment="center"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="8dp" />
+            app:layout_constraintRight_toLeftOf="@+id/TextView_2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/TextView_2"
+            android:layout_width="114dp"
+            android:layout_height="27dp"
+            android:layout_marginRight="64dp"
+            android:layout_marginTop="180dp"
+            android:text="Longitude"
+            android:textAlignment="center"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BUTTON_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="32dp"
+            android:onClick="displayHistory"
+            android:text="SHOW LOCATION HISTORY"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextView_4"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/TextView_3"
+            android:layout_width="382dp"
+            android:layout_height="172dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            android:text="Location History"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.444"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+        <TextView
+            android:id="@+id/TextView_4"
+            android:layout_width="364dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="48dp"
+            android:text="Time"
+            android:textAlignment="center"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/BUTTON_2"
+            tools:layout_editor_absoluteX="-89dp" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="97dp"
-            android:layout_height="58dp"
-            android:text="Button"
-            tools:layout_constraintTop_creator="1"
-            tools:layout_constraintLeft_creator="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="127dp"
-            android:layout_marginTop="109dp" />
-
-        <Button
-            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:onClick="sendEmail"
-            android:text="Share Secrets"
-            app:layout_constraintTop_toBottomOf="@+id/button2"
-            tools:layout_editor_absoluteX="101dp" />
+            android:layout_marginTop="8dp"
+            android:onClick="clearHistory"
+            android:text="Clear history"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/BUTTON_3" />
 
     </android.support.constraint.ConstraintLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation" />
 
 </LinearLayout>

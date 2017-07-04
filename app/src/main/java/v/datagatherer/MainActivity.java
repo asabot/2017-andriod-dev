@@ -23,10 +23,13 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,8 +39,14 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
@@ -194,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
     public void uploadData(View view){
         final TextView textViewThree = (TextView) findViewById(R.id.TextView_3);
-       // Instantiate the RequestQueue.
+        // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://192.168.1.26:5000";
 
@@ -209,11 +218,47 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textViewThree.setText("That didn't work!");
+                textViewThree.setText(error.getMessage());
             }
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+    }
+
+
+
+
+    public void json (View view){
+        final String URL = "http://192.168.1.26:5000/data";
+        RequestQueue queue = Volley.newRequestQueue(this);
+// Post params to be sent to the server
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("device", "Samsung Note 5");
+        params.put("time", getTime());
+        params.put("latitude", lat);
+        params.put("longitude", longi);
+
+        JsonObjectRequest req = new JsonObjectRequest(URL, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+
+// add the request object to the queue to be executed
+        queue.add(req);
+
 
 
 
@@ -223,6 +268,57 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     }
 
 
+    // public static void postNewComment(Context context,final String comment,final int blogId,final int postId)
+    public void postNewComment(View view){
+        final TextView textViewThree = (TextView) findViewById(R.id.TextView_3);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest sr = new StringRequest(Request.Method.POST,"http://192.168.1.26:5000/data", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                textViewThree.setText("Response is: "+ response); //.substring(0,500)
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("device", "Samsung Note 5");
+                params.put("time", getTime());
+                params.put("latitude", lat);
+                params.put("longitude", longi);
+                //params.put("comment", "Hi");
+                //params.put("comment_post_ID",String.valueOf(postId));
+               // params.put("blogId",String.valueOf(blogId));
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public interface PostCommentResponseListener {
+        public void requestStarted();
+        public void requestCompleted();
+        public void requestEndedWithError(VolleyError error);
+    }
+
+    public String getTime(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String millisInString  = dateFormat.format(new Date());
+        // textViewFour.setText(millisInString);
+
+        return millisInString;
+    }
 
 }

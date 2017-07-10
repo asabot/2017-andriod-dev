@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     GoogleApiClient mGoogleApiClient;
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     String longi;
     int key = 0;
     String savedData = "";
+    Handler h = new Handler();
+    int delay = 5000; //5 seconds
+    Runnable runnable;
 
     //SharedPreferences sharedPref = getSharedPreferences("dataFile", Context.MODE_PRIVATE);
    // SharedPreferences.Editor editor = sharedPref.edit();
@@ -96,10 +101,28 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         }
     }
 
+  //  protected void onStart() {
+    //    mGoogleApiClient.connect();
+      //  super.onStart();
+    //}
     protected void onStart() {
         mGoogleApiClient.connect();
+//start handler as activity become visible
+
+        h.postDelayed(new Runnable() {
+            public void run() {
+                //do something
+                json2();
+
+                runnable=this;
+
+                h.postDelayed(runnable, delay);
+            }
+        }, delay);
+
         super.onStart();
     }
+
 
     protected void onStop() {
         mGoogleApiClient.disconnect();
@@ -226,15 +249,12 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
     }
 
-
-
-
-    public void json (View view){
+    public void json2 () {
         final String URL = "http://192.168.1.26:5000/data";
         RequestQueue queue = Volley.newRequestQueue(this);
 // Post params to be sent to the server
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("device", "Samsung Note 5");
+        params.put("device", android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL);
         params.put("time", getTime());
         params.put("latitude", lat);
         params.put("longitude", longi);
@@ -258,13 +278,38 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
 // add the request object to the queue to be executed
         queue.add(req);
+    }
 
 
+    public void json (View view){
+        final String URL = "http://192.168.1.26:5000/data";
+        RequestQueue queue = Volley.newRequestQueue(this);
+// Post params to be sent to the server
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("device", android.os.Build.MANUFACTURER + " "  + android.os.Build.MODEL);
+        params.put("time", getTime());
+        params.put("latitude", lat);
+        params.put("longitude", longi);
 
+        JsonObjectRequest req = new JsonObjectRequest(URL, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            VolleyLog.v("Response:%n %s", response.toString(4));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
 
-
-
-
+// add the request object to the queue to be executed
+        queue.add(req);
     }
 
 
